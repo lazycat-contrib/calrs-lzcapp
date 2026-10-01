@@ -1,6 +1,11 @@
 name: Publish LazyCat LPK
 
 on:
+  push:
+    tags:
+      - "v*"
+  release:
+    types: [published]
   schedule:
     - cron: "37 5 * * *"
   workflow_dispatch:
