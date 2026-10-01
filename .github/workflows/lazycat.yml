@@ -4,6 +4,14 @@ on:
   schedule:
     - cron: "37 5 * * *"
   workflow_dispatch:
+    inputs:
+      operation:
+        # 留空/auto：按计划走常规发布；首次上架官方店需要显式 publish-official
+        # （官方店的“待审版本”闸门不适用于显式操作）
+        description: "auto / check / build / publish-official / publish-private"
+        type: string
+        required: false
+        default: auto
 
 permissions:
   contents: write
@@ -17,7 +25,7 @@ jobs:
   lazycat:
     uses: ca-x/lazycat-github-action/.github/workflows/lazycat.yml@v1
     with:
-      operation: auto
+      operation: ${{ inputs.operation || 'auto' }}
       config: .github/lazycat-action.yml
       image-id: calrs
       toolchains: none
