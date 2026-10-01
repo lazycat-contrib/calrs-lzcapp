@@ -14,7 +14,7 @@ services:
     user: root
     # upstream: ghcr.io/olivierlambert/calrs:1.18.0
     # 官方商店交付（delivery.mode=lazycat）时由 Action 转存到懒猫镜像源并改写此行
-    image: ghcr.io/olivierlambert/calrs:1.18.0
+    image: registry.lazycat.cloud/czyt/olivierlambert/calrs:fb02306128a0f789
     environment:
       # 对外的 base URL：生成的链接、邮件里的地址、.ics 都用它
       - CALRS_BASE_URL=https://{{ .S.AppDomain }}
