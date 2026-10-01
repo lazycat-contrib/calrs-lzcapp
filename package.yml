@@ -1,0 +1,18 @@
+package: cloud.lazycat.app.calrs
+version: 1.18.0
+name: calrs
+description: Fast, self-hostable scheduling platform — CalDAV sync, teams, notifications and a full admin console, written in Rust.
+min_os_version: 1.5.0
+homepage: https://github.com/olivierlambert/calrs
+author: olivierlambert
+license: AGPL-3.0
+locales:
+  zh:
+    name: "calrs"
+    description: "自托管的预约调度平台：事件类型、可预约时段、团队轮询、CalDAV 同步与邮件通知，后台可管用户与登录方式。"
+  zh_CN:
+    name: "calrs"
+    description: "自托管的预约调度平台：事件类型、可预约时段、团队轮询、CalDAV 同步与邮件通知，后台可管用户与登录方式。"
+  en:
+    name: "calrs"
+    description: "Fast, self-hostable scheduling platform with CalDAV sync, teams, notifications and a full admin console."

@@ -1,0 +1,76 @@
+version: 1
+
+project:
+  root: .
+  build_config: lzc-build.yml
+  package_file: package.yml
+  output: dist/calrs.lpk
+  target_arch: amd64
+
+update:
+  strategy: publish
+  allow_downgrade: false
+  version_source:
+    type: image
+    image: calrs
+
+build:
+  toolchains: []
+  run_buildscript: false
+
+images:
+  - id: calrs
+    target: service
+    service: calrs
+    source: ghcr.io/olivierlambert/calrs
+    channel: stable
+    sort: semver
+    tag_regex: '^[0-9]+\.[0-9]+\.[0-9]+$'
+    delivery:
+      # 官方商店要求镜像来自懒猫镜像源：由 Action 转存并改写 manifest 里 calrs 服务的 image
+      mode: lazycat
+
+stores:
+  official:
+    enabled: true
+    skip_if_version_exists: true
+    create_if_missing: true
+    changelog_locales: [zh, en]
+    retry:
+      enabled: false
+      max_attempts: 3
+      initial_delay: 2s
+      max_delay: 30s
+    application:
+      language: zh
+      name: calrs
+      brief: 自托管的预约调度平台（Rust 版 Cal.com）
+      description: |
+        calrs 是自己部署的预约调度平台：建事件类型、给可预约时段、把预约页发给别人，
+        访客按自己的时区挑时间，确认与提醒走邮件，.ics 邀请直接进对方的日历。
+        支持个人与团队（团队可轮询最不忙的人）、内部/私有可见性、一次性邀请链接、
+        CalDAV 同步（Nextcloud、iCloud、Fastmail、Zimbra、Radicale 等）、OIDC 登录、
+        7 套内置主题与 8 种界面语言。
+        懒猫微服包里：对外 base URL 已自动设成应用域名，凭据加密密钥由本应用生成并固定，
+        数据都在 /lzcapp/var/calrs；打开站点注册的第一个账号就是管理员。
+      keywords: 预约,日历,调度,CalDAV,团队,排期
+      source: https://github.com/olivierlambert/calrs
+      source_author: olivierlambert
+      support_pc: true
+      screenshot_pc_files:
+        - .github/screenshots/pc-1-dashboard.png
+        - .github/screenshots/pc-2-event-types.png
+        - .github/screenshots/pc-3-bookings.png
+        - .github/screenshots/pc-4-booking-page.png
+        - .github/screenshots/pc-5-admin.png
+      support_mobile: true
+      screenshot_mobile_files:
+        - .github/screenshots/mobile-1-booking-page.png
+        - .github/screenshots/mobile-2-booking-form.png
+        - .github/screenshots/mobile-3-dashboard.png
+        - .github/screenshots/mobile-4-event-types.png
+  private:
+    enabled: true
+    skip_if_version_exists: true
+    name: calrs
+    summary: "calrs 懒猫微服打包：自托管预约调度（CalDAV 同步、团队轮询、邮件通知、管理后台）。"

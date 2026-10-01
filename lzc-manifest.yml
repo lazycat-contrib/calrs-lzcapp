@@ -1,0 +1,44 @@
+application:
+  subdomain: calrs
+  multi_instance: false
+  upstreams:
+    - location: /
+      backend: http://calrs:3000
+  # 预约站是给人公开访问的（访客打开预约页、拿 .ics），后台由应用自己的账号体系保护：
+  # 首个注册的用户成为管理员，之后的新用户都是普通用户
+  public_path:
+    - /
+services:
+  calrs:
+    # 镜像里是非 root 的 calrs 用户，而 /lzcapp/var/calrs 由平台以 root 创建，用 root 起才能写数据目录
+    user: root
+    # upstream: ghcr.io/olivierlambert/calrs:1.18.0
+    # 官方商店交付（delivery.mode=lazycat）时由 Action 转存到懒猫镜像源并改写此行
+    image: ghcr.io/olivierlambert/calrs:1.18.0
+    environment:
+      # 对外的 base URL：生成的链接、邮件里的地址、.ics 都用它
+      - CALRS_BASE_URL=https://{{ .S.AppDomain }}
+      # CALRS_SECRET_KEY 不设：它要求 base64 的 32 字节，模板生成的随机串不满足会让容器起不来；
+      # 交给 calrs 自己首次启动时生成并存进数据目录（/lzcapp/var/calrs），随卷持久化
+    binds:
+      - /lzcapp/var/calrs:/var/lib/calrs
+usage: |
+  calrs 是自托管的预约调度平台（类似 Cal.com，Rust 写的）：事件类型、可预约时段、团队轮询、
+  CalDAV 同步（Nextcloud / iCloud / Fastmail 等）、邮件通知、多语言界面。
+
+  【第一步：注册管理员】
+  打开应用域名，点注册——第一个注册的账号就是管理员，之后的都是普通用户。后台在顶栏的 Admin。
+
+  【已经替你配好的】
+  · CALRS_BASE_URL 已设为应用域名：预约链接、邮件、.ics 里的地址都是对的；
+  · 凭据加密密钥由 calrs 首次启动时自动生成，放在数据目录里随卷持久化
+    （注意：清空 /lzcapp/var/calrs 会让已保存的 CalDAV/SMTP 密码解不开，需要重新填）。
+
+  【常用设置】
+  · 日历来源：Dashboard → Calendar sources 里加 CalDAV（填地址、账号、密码即可）；
+  · 邮件：Admin → SMTP 里配，配好才会发预约确认与提醒；
+  · 主题、时区、语言、OIDC 登录都在 Admin 里。
+
+  【数据】
+  数据库、上传与凭据都在 /lzcapp/var/calrs（容器内 /var/lib/calrs），升级/重装不丢；
+  需要迁移或备份时整目录拷走即可。
