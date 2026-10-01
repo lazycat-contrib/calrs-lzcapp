@@ -32,7 +32,10 @@ images:
 
 stores:
   official:
-    enabled: true
+    # 官方商店里 cloud.lazycat.app.calrs 已被其它开发者账号占用：当前 LZC_API_TOKEN
+    # 既查不了待审版本（400），提交评审也报“无权获取该应用信息”。按决定只发喵喵商店；
+    # 配置整体保留，归属问题解决后把 enabled 改回 true 即可恢复官方店。
+    enabled: false
     skip_if_version_exists: true
     create_if_missing: true
     changelog_locales: [zh, en]
@@ -71,6 +74,8 @@ stores:
         - .github/screenshots/mobile-4-event-types.png
   private:
     enabled: true
-    skip_if_version_exists: true
+    # 临时放开：把已在线的 1.18.0 重新提交一遍，换成指向懒猫镜像源的 LPK
+    # （首版走 tag 路径发布时镜像还没转存，清单里仍是 ghcr 地址）。换完改回 true。
+    skip_if_version_exists: false
     name: calrs
     summary: "calrs 懒猫微服打包：自托管预约调度（CalDAV 同步、团队轮询、邮件通知、管理后台）。"
