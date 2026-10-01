@@ -74,8 +74,6 @@ stores:
         - .github/screenshots/mobile-4-event-types.png
   private:
     enabled: true
-    # 临时放开：把已在线的 1.18.0 重新提交一遍，换成指向懒猫镜像源的 LPK
-    # （首版走 tag 路径发布时镜像还没转存，清单里仍是 ghcr 地址）。换完改回 true。
-    skip_if_version_exists: false
+    skip_if_version_exists: true
     name: calrs
     summary: "calrs 懒猫微服打包：自托管预约调度（CalDAV 同步、团队轮询、邮件通知、管理后台）。"
