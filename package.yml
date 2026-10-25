@@ -1,5 +1,5 @@
 package: cloud.lazycat.app.calrs
-version: 1.20.1
+version: 1.20.3
 name: calrs
 description: Fast, self-hostable scheduling platform — CalDAV sync, teams, notifications and a full admin console, written in Rust.
 min_os_version: 1.5.0
