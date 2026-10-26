@@ -12,9 +12,9 @@ services:
   calrs:
     # 镜像里是非 root 的 calrs 用户，而 /lzcapp/var/calrs 由平台以 root 创建，用 root 起才能写数据目录
     user: root
-    # upstream: ghcr.io/olivierlambert/calrs:1.20.3
+    # upstream: ghcr.io/olivierlambert/calrs:1.21.0
     # 官方商店交付（delivery.mode=lazycat）时由 Action 转存到懒猫镜像源并改写此行
-    image: registry.lazycat.cloud/czyt/olivierlambert/calrs:1ddd883139597927
+    image: registry.lazycat.cloud/czyt/olivierlambert/calrs:afb046c6c9744ce3
     environment:
       # 对外的 base URL：生成的链接、邮件里的地址、.ics 都用它
       - CALRS_BASE_URL=https://{{ .S.AppDomain }}
